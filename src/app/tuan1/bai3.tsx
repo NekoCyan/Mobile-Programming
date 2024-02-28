@@ -5,16 +5,19 @@ export default function Bai3() {
 	return (
 		<View style={styles.container}>
 			<View style={styles.image} />
-			<Text style={styles.text}>
-				<Text style={{ ...styles.bullet }}>{'\u2B24'}</Text> Họ và tên:
-				Vũ Quốc Bảo
-				<br />
-				<Text style={styles.bullet}>{'\u2B24'}</Text> Tuổi: 20
-				<br />
-				<Text style={styles.bullet}>{'\u2B24'}</Text> Nghề nghiệp: Sinh
-				viên
-			</Text>
+			<View>
+				{newText('Họ và tên: Vũ Quốc Bảo')}
+				{newText('Tuổi: 20')}
+				{newText('Nghề nghiệp: Sinh viên')}
+			</View>
 		</View>
+	);
+}
+function newText(text: string) {
+	return (
+		<Text style={styles.text}>
+			<Text style={styles.bullet}>{'\u2B24'}</Text> {text}
+		</Text>
 	);
 }
 const styles = StyleSheet.create({
@@ -22,6 +25,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
 		justifyContent: 'center',
+		gap: 10,
 	},
 	image: {
 		width: 150,
