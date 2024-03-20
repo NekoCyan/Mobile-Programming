@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function Bai3() {
+export default function Tuan1Bai3() {
 	return (
 		<View style={styles.container}>
 			<View style={styles.image} />

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function Tuan1Bai2() {
+export default function Test() {
 	return (
 		<View style={styles.container}>
 			<View style={{ ...styles.element, ...backgroundColor.red }}>
@@ -38,9 +38,9 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
-    text: {
-        fontSize: 50,
-    },
+	text: {
+		fontSize: 50,
+	},
 });
 
 const backgroundColor = StyleSheet.create({

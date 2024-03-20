@@ -16,7 +16,7 @@ let students = [
 	},
 ];
 
-export default function Bai1() {
+export default function Tuan1Bai1() {
 	return (
 		<View style={styles.container}>
 			{students.map((x) => {

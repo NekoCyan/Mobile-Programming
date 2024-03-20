@@ -1,10 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text, Pressable } from 'react-native';
-import { Link } from 'expo-router';
-import Bai1 from './tuan1/bai1';
-import Bai2 from './tuan1/bai2';
-import Test from '../test';
-import Bai3 from './tuan1/bai3';
+import { StyleSheet, View } from 'react-native';
+import Tuan3Bai3 from './tuan3/bai3';
 
 export default function App() {
 	return (
@@ -22,7 +18,24 @@ export default function App() {
 
 		// <Bai1 />
 		// <Bai2 />
-		<Bai3 />
+		// <Bai3 />
+		// <_TextInput />
+		// <_Modal />
+		// <Demo />
+		<View style={{ gap: 20 }}>
+			{/* <Status title='Hello' description='World' />
+			<Status
+				title='Hôm nay trời đệp quá'
+				description='12345 likes - 54321 hearts'
+			/>
+			<Status
+				title='Quang ơi'
+				description='Quang đẹp trai quá'
+			/> */}
+			{/* <Tempurature /> */}
+			{/* <Tuan2Bai1 A={2} B={3}/> */}
+			<Tuan3Bai3 />
+		</View>
 	);
 }
 
