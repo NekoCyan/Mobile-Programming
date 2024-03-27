@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 export default function Tuan2Bai2() {
 	const InSoLe = () => {
@@ -20,6 +20,10 @@ export default function Tuan2Bai2() {
 
 	console.log(`Số số lẻ trong khoảng 50 đến 100 là ${InSoLe()}`);
 
-	return <View></View>;
+	return (
+		<View>
+			<Text style={{ fontSize: 20, marginLeft: 5 }}>Check Console</Text>
+		</View>
+	);
 }
 const styles = StyleSheet.create({});

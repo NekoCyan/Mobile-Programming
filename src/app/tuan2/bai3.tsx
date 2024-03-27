@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 const data = [
 	{ id: 1, ten: 'Sách Toán', loai: 'Sách' },
@@ -23,6 +23,10 @@ export default function Tuan2Bai3() {
 		data.some((item) => item.loai === 'Tiểu Thuyết'),
 	);
 
-	return <View></View>;
+	return (
+		<View>
+			<Text style={{ fontSize: 20, marginLeft: 5 }}>Check Console</Text>
+		</View>
+	);
 }
 const styles = StyleSheet.create({});

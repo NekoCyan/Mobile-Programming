@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 export default function Tuan2Bai7() {
 	const number = [10, 9, 9]
@@ -10,31 +10,34 @@ export default function Tuan2Bai7() {
 
 	return (
 		<View style={styles.container}>
-			{number.map((itemchiso) => {
+			{number.map((itemchiso, index1) => { // Added "key" prop to the outer map
 				count += itemchiso;
 				return (
 					<View
+						key={index1} // Added "key" prop to the outer View
 						style={{
 							flexDirection: 'row',
 							justifyContent: 'center',
 						}}
 					>
-						{keyboard.map((item, index) => {
-							if (index < count && index >= count - itemchiso) {
+						{keyboard.map((item, index2) => { // Added "key" prop to the inner map
+							if (index2 < count && index2 >= count - itemchiso) {
 								return (
-									<View
+									<Text
+										key={index2} // Added "key" prop to the inner View
 										style={{
 											...styles.keyboard,
-											...((index == 19 ||
-												index == 27) && {
+											...((index2 === 19 || // Replaced '==' with '==='
+												index2 === 27) && { // Replaced '==' with '==='
 												backgroundColor: '#CACCD3',
 											}),
 										}}
 									>
 										{item}
-									</View>
+									</Text>
 								);
 							}
+							return null; // Added return statement for the else case
 						})}
 					</View>
 				);
