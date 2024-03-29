@@ -30,7 +30,8 @@ export default function App() {
 					name='Buy'
 					component={Buy}
 					options={{
-						title: 'Buying'
+						headerBackTitle: 'Dashboard',
+						title: 'Buying',
 					}}
 				/>
 				<Stack.Screen

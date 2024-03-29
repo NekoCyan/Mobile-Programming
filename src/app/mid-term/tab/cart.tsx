@@ -84,9 +84,8 @@ export default function Cart(props: any) {
 const styles = StyleSheet.create({
 	container: {
 		margin: 10,
-		marginTop: 30,
+		marginTop: 50,
 		flex: 1,
-		justifyContent: 'space-between',
 	},
 	cartContainer: {
 		display: 'flex',
@@ -164,14 +163,13 @@ const styles = StyleSheet.create({
 		color: '#FF0000',
 	},
 	checkoutButtonText: {
-		width: 120,
-		height: 50,
+		padding: 10,
+		paddingLeft: 20,
+		paddingRight: 20,
 		color: 'white',
 		fontWeight: 'bold',
 		backgroundColor: '#1484f5',
 		borderRadius: 10,
 		fontSize: 18,
-		textAlign: 'center',
-		alignContent: 'center',
 	},
 });

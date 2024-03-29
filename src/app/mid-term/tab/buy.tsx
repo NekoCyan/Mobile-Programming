@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { Image } from 'react-bootstrap';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function Buy(props: any) {
 	const [quantity, setQuantity] = useState(1);
@@ -10,7 +9,7 @@ export default function Buy(props: any) {
 			<View style={styles.product}>
 				<Image
 					style={styles.image}
-					src={require('../../../assets/MeowFood.jpg')}
+					source={require('../../../assets/MeowFood.jpg')}
 					alt='meow food'
 				/>
 				<Text style={styles.productName}>MEOW FOOD MIX</Text>
@@ -85,7 +84,7 @@ const styles = StyleSheet.create({
 	modifierText: {
 		backgroundColor: '#1484f5',
 		width: 50,
-		height: 50,
+		height: 40,
 		fontSize: 30,
 		justifyContent: 'center',
 		textAlign: 'center',
@@ -114,14 +113,13 @@ const styles = StyleSheet.create({
 		gap: 20,
 	},
 	btnText: {
-		width: 150,
-		height: 70,
+		padding: 20,
+		paddingLeft: 30,
+		paddingRight: 30,
 		color: 'white',
 		fontWeight: 'bold',
 		backgroundColor: '#1484f5',
 		borderRadius: 10,
 		fontSize: 20,
-		textAlign: 'center',
-		alignContent: 'center',
-	}
+	},
 });

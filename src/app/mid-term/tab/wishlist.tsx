@@ -6,7 +6,7 @@ export default function Wishlist() {
 			<Text style={styles.text}>
 				You have no wishlist item.
 				{'\n'}
-				Go shopping and fine one ~
+				Go shopping and find one ~
 			</Text>
 		</View>
 	);
