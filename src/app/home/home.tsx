@@ -23,6 +23,10 @@ export default function Home(props: any) {
 				title='Tuan 5'
 				onPress={() => props.navigation.navigate('Tuan5')}
 			/>
+			<Button
+				title='Tuan 6'
+				onPress={() => props.navigation.navigate('Tuan6')}
+			/>
 		</View>
 	);
 }
