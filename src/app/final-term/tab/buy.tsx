@@ -17,7 +17,7 @@ import { FormatCurrency, RandomNumber } from '../../../utils/Utilities';
 export default function Buy(props: any) {
 	const { id } = props.route.params;
 	const product = PRODUCTS.find((x) => x.id === parseInt(id));
-	
+
 	const dispatch: RootDispatch = useDispatch();
 
 	const [quantity, setQuantity] = useState(1);
@@ -29,6 +29,7 @@ export default function Buy(props: any) {
 		setTimeout(() => {
 			dispatch(cartAction.insertCart({ id: product.id, quantity }));
 			props.navigation.goBack();
+			setIsSubmitting(false);
 		}, RandomNumber(100, 800)); // Gacha time :>
 	}, [isSubmitting]);
 

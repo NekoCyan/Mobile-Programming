@@ -1,18 +1,17 @@
 import { Ionicons } from '@expo/vector-icons';
+import { Text, View } from 'native-base';
 import React, { useState } from 'react';
 import {
 	Image,
 	ScrollView,
 	StyleSheet,
-	Text,
 	TextInput,
 	TouchableOpacity,
-	View,
 } from 'react-native';
 import ProductShower from '../../../component/productShower';
 import { CAT_IMAGES, PRODUCTS } from '../../../utils/Constant';
 
-const imageSources = [...CAT_IMAGES, ...CAT_IMAGES.reverse()];
+const imageSources = [...CAT_IMAGES, ...CAT_IMAGES, ...CAT_IMAGES];
 
 export default function Dashboard(props: any) {
 	const [search, setSearch] = useState('');
@@ -21,12 +20,7 @@ export default function Dashboard(props: any) {
 	return (
 		<ScrollView style={styles.container}>
 			<View style={styles.search}>
-				<Ionicons
-					style={{}}
-					name='search'
-					size={25}
-					color={'#1484f5'}
-				/>
+				<Ionicons name='search' size={25} color={'#1484f5'} />
 				<TextInput
 					placeholder='What are you looking for...'
 					placeholderTextColor={'black'}
@@ -42,8 +36,8 @@ export default function Dashboard(props: any) {
 							position: 'absolute',
 							right: 0,
 							top: 0,
+							paddingTop: 15,
 							padding: 10,
-							paddingLeft: 15,
 						}}
 						onPress={() => setSearch('')}
 					>
@@ -78,7 +72,7 @@ export default function Dashboard(props: any) {
 				<View>
 					<View style={styles.shower}>
 						<Text style={styles.showerText}>
-							IMAGES YOU MIGHT LIKE!
+							Image you might like!
 						</Text>
 						<ScrollView
 							style={styles.showerScroll}
@@ -99,10 +93,12 @@ export default function Dashboard(props: any) {
 					</View>
 					<View style={styles.shower}>
 						<Text style={styles.showerText}>
-							BEST FOOD FOR YOUR CAT~
+							Best from Meow Mix Food ~
 						</Text>
-						{PRODUCTS.filter((x) =>
-							x.categories.includes('Food'),
+						{PRODUCTS.filter(
+							(x) =>
+								x.categories.includes('Meow Mix') &&
+								x.categories.includes('Food'),
 						).map((data, index) => (
 							<ProductShower
 								key={data.id}
@@ -111,6 +107,23 @@ export default function Dashboard(props: any) {
 							/>
 						))}
 					</View>
+					<View style={styles.shower}>
+						<Text style={styles.showerText}>
+							Good food that you can't miss!
+						</Text>
+						{PRODUCTS.filter(
+							(x) => !x.categories.includes('Meow Mix'),
+						).map((data, index) => (
+							<ProductShower
+								key={data.id}
+								props={props}
+								data={data}
+							/>
+						))}
+					</View>
+					<Text textAlign={'center'} fontSize={'2xl'} mb={5}>
+						You catched all up ~
+					</Text>
 				</View>
 			)}
 		</ScrollView>
@@ -156,7 +169,8 @@ const styles = StyleSheet.create({
 	},
 	showerText: {
 		fontWeight: 'bold',
-		fontSize: 20,
+		fontSize: 22,
+		textTransform: 'uppercase',
 	},
 	showerScroll: {
 		height: 250,

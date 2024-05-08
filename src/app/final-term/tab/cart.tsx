@@ -50,18 +50,40 @@ export default function Cart(props: any) {
 						return (
 							<View key={id} style={styles.cart}>
 								<Text style={styles.index}>{index + 1}.</Text>
-								<Image
-									style={styles.productImage}
-									source={image}
-									alt={name}
-								/>
-								<View style={styles.productText}>
-									<Text style={styles.productTitle}>
-										{name}
-									</Text>
-									<Text style={styles.productPrice}>
-										{FormatCurrency(price)}
-									</Text>
+								<View
+									style={{
+										flex: 1,
+									}}
+								>
+									<TouchableOpacity
+										style={{
+											flexDirection: 'row',
+											gap: 5,
+										}}
+										onPress={() =>
+											props.navigation.navigate('Buy', {
+												id,
+											})
+										}
+									>
+										<Image
+											style={styles.productImage}
+											source={image}
+											alt={name}
+										/>
+
+										<View style={styles.productText}>
+											<Text
+												numberOfLines={2}
+												style={styles.productTitle}
+											>
+												{name}
+											</Text>
+											<Text style={styles.productPrice}>
+												{FormatCurrency(price)}
+											</Text>
+										</View>
+									</TouchableOpacity>
 								</View>
 								<View style={styles.quantity}>
 									<TouchableOpacity
@@ -138,12 +160,12 @@ export default function Cart(props: any) {
 const styles = StyleSheet.create({
 	container: {
 		margin: 10,
-		marginTop: 70,
+		marginTop: 60,
 		flex: 1,
 	},
 	cartContainer: {
 		display: 'flex',
-		gap: 30,
+		gap: 25,
 	},
 	cart: {
 		flex: 1,
@@ -161,11 +183,11 @@ const styles = StyleSheet.create({
 	},
 	productText: {
 		flex: 1,
+		justifyContent: 'space-evenly',
 	},
 	productTitle: {
 		fontWeight: 'bold',
 		fontSize: 20,
-		justifyContent: 'flex-start',
 	},
 	productPrice: {
 		fontSize: 18,

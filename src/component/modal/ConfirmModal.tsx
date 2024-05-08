@@ -1,29 +1,39 @@
-import { Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { View } from 'native-base';
+import { Modal, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 type ModalProps = {
 	title?: string;
 	description?: string;
-	onClose?: () => void;
+	onCancel?: () => void;
+	onConfirm?: () => void;
 };
 
-export default function AlertModal(props: Readonly<ModalProps>) {
+export default function ConfirmModal(props: Readonly<ModalProps>) {
 	return (
 		<View style={styles.centeredView}>
-			<Modal transparent={true} onRequestClose={props.onClose}>
+			<Modal transparent={true} onRequestClose={props.onCancel}>
 				<View style={styles.centeredView}>
 					<View style={styles.modalView}>
 						<Text style={styles.modalTitle}>
-							{props.title || 'Alert'}
+							{props.title || 'Confirmation'}
 						</Text>
 						<Text style={styles.modalDescription}>
 							{props.description ?? 'No description'}
 						</Text>
-						<Pressable
-							style={[styles.button, styles.buttonClose]}
-							onPress={props.onClose}
-						>
-							<Text style={styles.textStyle}>OK</Text>
-						</Pressable>
+						<View style={styles.buttonContainer}>
+							<TouchableOpacity
+								style={[styles.button, styles.buttonCancel]}
+								onPress={props.onCancel}
+							>
+								<Text style={styles.textStyle}>Cancel</Text>
+							</TouchableOpacity>
+							<TouchableOpacity
+								style={[styles.button, styles.buttonYes]}
+								onPress={props.onConfirm}
+							>
+								<Text style={styles.textStyle}>Confirm</Text>
+							</TouchableOpacity>
+						</View>
 					</View>
 				</View>
 			</Modal>
@@ -59,6 +69,12 @@ const styles = StyleSheet.create({
 		shadowRadius: 4,
 		elevation: 5,
 	},
+	buttonContainer: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		gap: 10,
+	},
 	button: {
 		borderRadius: 10,
 		padding: 10,
@@ -66,7 +82,10 @@ const styles = StyleSheet.create({
 		paddingRight: 20,
 		elevation: 2,
 	},
-	buttonClose: {
+	buttonYes: {
+		backgroundColor: '#2196F3',
+	},
+	buttonCancel: {
 		backgroundColor: '#2196F3',
 	},
 	textStyle: {
@@ -80,7 +99,9 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 	},
 	modalDescription: {
-		marginBottom: 18,
+		fontSize: 18,
+		marginTop: 2,
+		marginBottom: 20,
 		textAlign: 'center',
 	},
 });

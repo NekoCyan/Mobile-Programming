@@ -9,22 +9,45 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import AlertModal from '../../component/modal/AlertModal';
+import { RootDispatch, RootState } from '../../redux/store';
+import { UserAction, UserState } from '../../redux/user/UserSlice';
 import { MultiStyles } from '../../utils/ComponentUtils';
+import { PATTERN } from '../../utils/Constant';
 
 export default function Auth(props: any) {
-	const [auth, setAuth] = useState({ username: '', password: '' });
+	const user = useSelector<RootState, UserState>((state) => state.user);
+	const dispatch = useDispatch<RootDispatch>();
+
+	const [auth, setAuth] = useState({ username: user.username, password: '' });
 	const [showPassword, setShowPassword] = useState(false);
 	const [isSigning, setIsSigning] = useState(false);
 	const [error, setError] = useState('');
 
 	useEffect(() => {
 		if (!isSigning) return;
+		const usernamePattern = new RegExp(PATTERN.USERNAME);
 
-		setTimeout(() => {
-			props.navigation.replace('IndexTab');
-			setIsSigning(false);
-		}, 1000);
+		if (auth.username && !auth.password) {
+			setError(`Password is required!`);
+		} else if (auth.username.toLowerCase() === 'guest') {
+			setError(`Username is not allowed!`);
+		} else if (
+			auth.username &&
+			usernamePattern.test(auth.username) === false
+		) {
+			setError(`Username is not valid!`);
+		} else {
+			setTimeout(() => {
+				props.navigation.replace('IndexTab');
+				dispatch(UserAction.setUsername(auth.username));
+				setIsSigning(false);
+			}, 1000);
+			return;
+		}
+
+		setIsSigning(false);
 	}, [isSigning]);
 
 	return (
@@ -78,7 +101,11 @@ export default function Auth(props: any) {
 						}}
 						disabled={isSigning}
 					>
-						{isSigning ? 'Login...' : 'Login'}
+						{isSigning
+							? 'Login...'
+							: auth.username
+							? 'Login'
+							: 'Continue as Guest'}
 					</Text>
 				</TouchableOpacity>
 			</View>
@@ -143,7 +170,7 @@ const styles = StyleSheet.create({
 		color: 'white',
 		backgroundColor: '#1484f5',
 		padding: 5,
-		width: 200,
+		width: 270,
 		borderRadius: 10,
 		fontSize: 30,
 	},
