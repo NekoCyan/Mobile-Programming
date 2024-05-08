@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import temperatureReducer from './child/temperature';
+import CartSlice from './cart/CartSlice';
 
 export const store = configureStore({
 	reducer: {
-		temperature: temperatureReducer,
+		cart: CartSlice,
 	},
 });
 

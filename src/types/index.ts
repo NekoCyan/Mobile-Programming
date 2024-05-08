@@ -1,3 +1,4 @@
+
 export type DocumentList<T> = {
 	list: T[];
 	currentPage: number;

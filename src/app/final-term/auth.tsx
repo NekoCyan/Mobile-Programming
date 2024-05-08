@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
 	Image,
 	ImageBackground,
@@ -9,14 +9,8 @@ import {
 	TouchableOpacity,
 	View,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { DocumentList, NekoResponse, ProductData } from '../../types';
+import AlertModal from '../../component/modal/AlertModal';
 import { MultiStyles } from '../../utils/ComponentUtils';
-import { GET } from '../../utils/Request';
-import { constructAPIURL } from '../../utils/Utilities';
-import AlertModal from './component/modal/AlertModal';
-import { insertProduct } from './redux/products/ProductsSlice';
-import { RootDispatch } from './redux/store';
 
 export default function Auth(props: any) {
 	const [auth, setAuth] = useState({ username: '', password: '' });
@@ -24,82 +18,70 @@ export default function Auth(props: any) {
 	const [isSigning, setIsSigning] = useState(false);
 	const [error, setError] = useState('');
 
-	const dispatch: RootDispatch = useDispatch();
+	useEffect(() => {
+		if (!isSigning) return;
+
+		setTimeout(() => {
+			props.navigation.replace('IndexTab');
+			setIsSigning(false);
+		}, 1000);
+	}, [isSigning]);
 
 	return (
 		<ImageBackground
-			style={styles.container}
+			style={styles.background}
 			source={require('../../assets/BG_Login.jpg')}
 		>
-			<Image
-				style={styles.logo}
-				source={require('../../assets/DNTU_Logo.png')}
-			/>
-			<View style={styles.groupInput}>
-				<TextInput
-					placeholder='Username here...'
-					placeholderTextColor={'black'}
-					style={[styles.control, styles.label]}
-					onChangeText={(e) => setAuth({ ...auth, username: e })}
-					value={auth.username}
+			<View style={styles.container}>
+				<Image
+					style={styles.logo}
+					source={require('../../assets/logo.png')}
 				/>
+				<View style={styles.groupInput}>
+					<TextInput
+						placeholder='Username here...'
+						placeholderTextColor={'black'}
+						style={[styles.control, styles.label]}
+						onChangeText={(e) => setAuth({ ...auth, username: e })}
+						value={auth.username}
+					/>
+				</View>
+				<View style={styles.groupInput}>
+					<TextInput
+						placeholder='Password here...'
+						placeholderTextColor={'black'}
+						secureTextEntry={!showPassword}
+						style={[styles.control, styles.label]}
+						onChangeText={(e) => setAuth({ ...auth, password: e })}
+						value={auth.password}
+					/>
+					<MaterialCommunityIcons
+						name={showPassword ? 'eye-off' : 'eye'}
+						size={24}
+						color='rgba(255, 0, 0, 0.6)'
+						style={styles.showPasswordIcon}
+						onPress={() => setShowPassword(!showPassword)}
+						aria-label='Show Password'
+					/>
+				</View>
+				<TouchableOpacity>
+					<Text style={styles.link}>Forget Password?</Text>
+				</TouchableOpacity>
+				<TouchableOpacity>
+					<Text
+						style={MultiStyles(
+							styles.button,
+							isSigning && styles.signing,
+						)}
+						onPress={async () => {
+							setIsSigning(true);
+						}}
+						disabled={isSigning}
+					>
+						{isSigning ? 'Login...' : 'Login'}
+					</Text>
+				</TouchableOpacity>
 			</View>
-			<View style={styles.groupInput}>
-				<TextInput
-					placeholder='Password here...'
-					placeholderTextColor={'black'}
-					secureTextEntry={!showPassword}
-					style={[styles.control, styles.label]}
-					onChangeText={(e) => setAuth({ ...auth, password: e })}
-					value={auth.password}
-				/>
-				<MaterialCommunityIcons
-					name={showPassword ? 'eye-off' : 'eye'}
-					size={24}
-					color='rgba(255, 0, 0, 0.6)'
-					style={styles.showPasswordIcon}
-					onPress={() => setShowPassword(!showPassword)}
-					aria-label='Show Password'
-				/>
-			</View>
-			<TouchableOpacity>
-				<Text style={styles.link}>Forget Password?</Text>
-			</TouchableOpacity>
-			<TouchableOpacity>
-				<Text
-					style={MultiStyles(
-						styles.button,
-						isSigning && styles.signing,
-					)}
-					onPress={async () => {
-						setIsSigning(true);
-						try {
-							const {
-								data,
-							}: {
-								data: NekoResponse<DocumentList<ProductData>>;
-							} = await GET(constructAPIURL('ProductsList'));
-							if (data?.success) {
-								dispatch(insertProduct(data.data.list));
-								props.navigation.replace('IndexTab');
-							} else {
-								throw new Error(
-									data?.message ??
-										'Something went wrong, try again later.',
-								);
-							}
-						} catch (err) {
-							console.error(err);
-							setError(err.message);
-						} finally {
-							setIsSigning(false);
-						}
-					}}
-					disabled={isSigning}
-				>
-					{isSigning ? 'Login...' : 'Login'}
-				</Text>
-			</TouchableOpacity>
 			{!!error && (
 				<AlertModal
 					onClose={() => setError('')}
@@ -112,16 +94,21 @@ export default function Auth(props: any) {
 }
 
 const styles = StyleSheet.create({
+	background: {
+		flex: 1,
+		width: '100%',
+		height: '100%',
+	},
 	container: {
 		display: 'flex',
-		justifyContent: 'center',
 		alignItems: 'center',
 		gap: 20,
+		paddingTop: 100,
 		height: '100%',
 	},
 	logo: {
-		width: 150,
-		height: 300,
+		width: 300,
+		height: 150,
 	},
 	groupInput: {
 		display: 'flex',

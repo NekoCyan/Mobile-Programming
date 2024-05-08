@@ -1,41 +1,76 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useDispatch, useSelector } from 'react-redux';
+import { CartState, cartAction } from '../../../redux/cart/CartSlice';
+import { getProduct } from '../../../redux/helper';
+import { RootDispatch, RootState } from '../../../redux/store';
+import { FormatCurrency } from '../../../utils/Utilities';
 
 const totalProducts = 10;
 
 export default function Cart(props: any) {
-	const [quantity, setQuantity] = useState(
-		new Array(totalProducts).fill(1) as number[],
+	const carts = useSelector<RootState, CartState['value']>(
+		(state) => state.cart.value,
 	);
+	const dispatch: RootDispatch = useDispatch();
 
-	return (
+	const [isSubmitting, setIsSubmitting] = useState(false);
+
+	useEffect(() => {
+		if (!isSubmitting) return;
+
+		setTimeout(() => {
+			props.navigation.navigate('Thanks');
+		}, 1000);
+		setTimeout(() => {
+			dispatch(cartAction.clearCart());
+		}, 1500);
+	}, [isSubmitting]);
+
+	return carts.length > 0 ? (
 		<View style={styles.container}>
 			<View style={{ height: '90%', paddingBottom: 10 }}>
 				<ScrollView contentContainerStyle={styles.cartContainer}>
-					{Array.from({ length: totalProducts }).map((_, index) => {
+					{carts.map((data, index) => {
+						const product = getProduct(data.id);
+						if (!product) {
+							dispatch(
+								cartAction.setCart({
+									id: data.id,
+									quantity: 0,
+								}),
+							);
+							return null;
+						}
+						const { id, name, price, image } = product;
+						const { quantity } = data;
+
 						return (
-							<View key={index} style={styles.cart}>
+							<View key={id} style={styles.cart}>
 								<Text style={styles.index}>{index + 1}.</Text>
 								<Image
 									style={styles.productImage}
-									source={require('../../../assets/MeowFood.jpg')}
-									alt='meow food'
+									source={image}
+									alt={name}
 								/>
 								<View style={styles.productText}>
 									<Text style={styles.productTitle}>
-										MEOW FOOD MIX
+										{name}
 									</Text>
 									<Text style={styles.productPrice}>
-										$5.00
+										{FormatCurrency(price)}
 									</Text>
 								</View>
 								<View style={styles.quantity}>
 									<TouchableOpacity
 										onPress={() => {
-											const allQuantity = quantity;
-											allQuantity[index] += 1;
-											setQuantity([...allQuantity]);
+											dispatch(
+												cartAction.insertCart({
+													id,
+													quantity: 1,
+												}),
+											);
 										}}
 									>
 										<Text style={styles.quantityButtonText}>
@@ -43,15 +78,18 @@ export default function Cart(props: any) {
 										</Text>
 									</TouchableOpacity>
 									<Text style={styles.quantityText}>
-										{quantity[index]}
+										{quantity}
 									</Text>
 									<TouchableOpacity
 										onPress={() => {
-											const allQuantity = quantity;
-											if (allQuantity[index] <= 1) {
-												allQuantity[index] = 1;
-											} else allQuantity[index] -= 1;
-											setQuantity([...allQuantity]);
+											if (quantity === 1) return;
+
+											dispatch(
+												cartAction.insertCart({
+													id,
+													quantity: -1,
+												}),
+											);
 										}}
 									>
 										<Text style={styles.quantityButtonText}>
@@ -68,15 +106,27 @@ export default function Cart(props: any) {
 				<View style={styles.price}>
 					<Text style={styles.priceTotallyText}>Totally: </Text>
 					<Text style={styles.priceTotally}>
-						${quantity.reduce((pre, cur) => pre + cur, 0) * 5}.00
+						{FormatCurrency(
+							carts.reduce(
+								(total, data) =>
+									total +
+										(getProduct(data.id)?.price ?? 0) *
+											data.quantity || 0,
+								0,
+							),
+						)}
 					</Text>
 				</View>
-				<TouchableOpacity
-					onPress={() => props.navigation.navigate('Thanks')}
-				>
-					<Text style={styles.checkoutButtonText}>Buy Now</Text>
+				<TouchableOpacity onPress={() => setIsSubmitting(true)}>
+					<Text style={styles.checkoutButtonText}>
+						{isSubmitting ? 'Processing' : 'Buy Now'}
+					</Text>
 				</TouchableOpacity>
 			</View>
+		</View>
+	) : (
+		<View style={styles.emptyView}>
+			<Text style={styles.emptyText}>Your cart is empty.</Text>
 		</View>
 	);
 }
@@ -84,12 +134,12 @@ export default function Cart(props: any) {
 const styles = StyleSheet.create({
 	container: {
 		margin: 10,
-		marginTop: 50,
+		marginTop: 70,
 		flex: 1,
 	},
 	cartContainer: {
 		display: 'flex',
-		gap: 50,
+		gap: 30,
 	},
 	cart: {
 		flex: 1,
@@ -171,5 +221,14 @@ const styles = StyleSheet.create({
 		backgroundColor: '#1484f5',
 		borderRadius: 10,
 		fontSize: 18,
+	},
+	emptyView: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	emptyText: {
+		fontSize: 20,
+		textAlign: 'center',
 	},
 });
