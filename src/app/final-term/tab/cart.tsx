@@ -21,7 +21,8 @@ export default function Cart(props: any) {
 		if (!isSubmitting) return;
 
 		setTimeout(() => {
-			props.navigation.navigate('Thanks');
+			props.navigation.replace('Thanks');
+			setIsSubmitting(false);
 		}, 1000);
 		setTimeout(() => {
 			dispatch(cartAction.clearCart());
@@ -117,7 +118,10 @@ export default function Cart(props: any) {
 						)}
 					</Text>
 				</View>
-				<TouchableOpacity onPress={() => setIsSubmitting(true)}>
+				<TouchableOpacity
+					onPress={() => setIsSubmitting(true)}
+					disabled={isSubmitting}
+				>
 					<Text style={styles.checkoutButtonText}>
 						{isSubmitting ? 'Processing' : 'Buy Now'}
 					</Text>

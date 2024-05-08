@@ -1,13 +1,19 @@
+import { useNavigation } from '@react-navigation/native';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScreenNavigationProps } from '../../../types';
 
 export default function Thanks(props: any) {
+	const navigation = useNavigation<ScreenNavigationProps>();
+
 	return (
 		<View style={styles.container}>
 			<Text style={styles.text}>
 				Your request is processing.{'\n'}Thanks for purchasing!
 			</Text>
 			<TouchableOpacity
-				onPress={() => props.navigation.navigate('Dashboard')}
+				onPress={() => {
+					navigation.replace('IndexTab', { screen: 'Dashboard' });
+				}}
 			>
 				<Text style={styles.btnText}>Back to Dashboard</Text>
 			</TouchableOpacity>

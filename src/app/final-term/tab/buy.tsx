@@ -17,7 +17,7 @@ import { FormatCurrency, RandomNumber } from '../../../utils/Utilities';
 export default function Buy(props: any) {
 	const { id } = props.route.params;
 	const product = PRODUCTS.find((x) => x.id === parseInt(id));
-
+	
 	const dispatch: RootDispatch = useDispatch();
 
 	const [quantity, setQuantity] = useState(1);

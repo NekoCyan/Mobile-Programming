@@ -1,3 +1,4 @@
+import { StackNavigationProp } from '@react-navigation/stack';
 
 export type DocumentList<T> = {
 	list: T[];
@@ -26,3 +27,11 @@ export type NekoResponse<T> = {
 	success: boolean;
 	data: T;
 };
+
+export type RootStackParamList = {
+	IndexTab: { screen: 'Dashboard' | 'Wishlist' | 'Cart' | 'Profile' };
+	App: { screen: 'Auth' | 'IndexTab' | 'Buy' | 'Thanks' };
+	// Define other screen params here
+};
+
+export type ScreenNavigationProps = StackNavigationProp<RootStackParamList, any>;

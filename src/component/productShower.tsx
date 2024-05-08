@@ -1,4 +1,8 @@
+import { Ionicons } from '@expo/vector-icons';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
+import { WishlistState } from '../redux/wishlist/WishlistSlice';
 import { FormatCurrency } from '../utils/Utilities';
 
 export interface ProductShowerProps {
@@ -17,6 +21,13 @@ export default function ProductShower({
 	data,
 }: Readonly<ProductShowerProps>) {
 	const { id, name, description, price, image } = data;
+
+	const wishlist = useSelector<RootState, WishlistState['value']>(
+		(state) => state.wishlist.value,
+	);
+
+	const isFavorited = wishlist.includes(id);
+
 	return (
 		<TouchableOpacity
 			style={styles.container}
@@ -24,9 +35,29 @@ export default function ProductShower({
 		>
 			<Image style={styles.productImage} source={image} alt='name' />
 			<View style={styles.productText}>
-				<Text style={styles.productTitle} numberOfLines={1}>
-					{name}
-				</Text>
+				<View
+					style={{
+						display: 'flex',
+						flexDirection: 'row',
+						gap: 2,
+					}}
+				>
+					{isFavorited && (
+						<Ionicons
+							name={
+								wishlist.includes(id)
+									? 'heart'
+									: 'heart-outline'
+							}
+							size={15}
+							color='red'
+							style={{ marginTop: 2 }}
+						/>
+					)}
+					<Text style={styles.productTitle} numberOfLines={1}>
+						{name}
+					</Text>
+				</View>
 				<Text style={styles.productDescription} numberOfLines={3}>
 					{description}
 				</Text>
