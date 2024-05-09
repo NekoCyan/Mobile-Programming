@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -49,7 +50,34 @@ export default function Cart(props: any) {
 
 						return (
 							<View key={id} style={styles.cart}>
-								<Text style={styles.index}>{index + 1}.</Text>
+								<View
+									style={{
+										display: 'flex',
+										flexDirection: 'column',
+										alignItems: 'center',
+									}}
+								>
+									<Text style={styles.index}>
+										{index + 1}.
+									</Text>
+									<TouchableOpacity
+										onPress={() =>
+											dispatch(
+												cartAction.setCart({
+													id,
+													quantity: 0,
+												}),
+											)
+										}
+									>
+										<Ionicons
+											name={'trash'}
+											size={30}
+											color='red'
+											style={{ padding: 5 }}
+										/>
+									</TouchableOpacity>
+								</View>
 								<View
 									style={{
 										flex: 1,
